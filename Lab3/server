@@ -1,47 +1,63 @@
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+public class server {
 
-public class GoBackNClient {
-
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		Scanner scr = new Scanner(System.in);
-		int noPackets;
-		int sent = 1;
-		int ackn =-1;
-		// define a (client socket)
-		Socket socket = new Socket("localhost", 5975);
-		//write to socket
-		DataOutputStream socket_out = new DataOutputStream(
-				socket.getOutputStream());
-		// read  from socket:
-		DataInputStream socket_in =new DataInputStream(socket.getInputStream());
-		//get no. of packets from user
-		System.out.println("Enter number of packets");
-		noPackets = scr.nextInt();
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			Scanner scr = new Scanner(System.in);
+			DataOutputStream socket_dos = null;
+			BufferedReader reader = null;
+			ServerSocket serverSocket = null;
+			
 		
-		// send no of packets
-		socket_out.write(noPackets);
-		
-		//send packets and wait for acks
-		while(noPackets >= sent){
-			System.out.println("Sending packet#" + sent);
-			socket_out.write(sent);
-			//acks
-			ackn = socket_in.read();
-			if(ackn == sent){
-				System.out.println("Ack#" + ackn);
-				sent++;
+			try {
+				serverSocket = new ServerSocket(5975);		
+			Socket server = serverSocket.accept();
+		    reader = new BufferedReader(new InputStreamReader (server.getInputStream()));
+			//BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+			
+		    socket_dos = new DataOutputStream(server.getOutputStream());
+			int input,last_ack;
+			int num_pk = reader.read();
+			last_ack = 0;
+			
+			while (last_ack < num_pk){
+			//pk_num = Integer.valueOf(input);
+				input = reader.read();
+				if (input== (last_ack +1)){
+					last_ack = input;
+					System.out.println("received packet #:"+input);
+					socket_dos.write(last_ack);
+				}
 			}
-		}
-		
-		socket_out.close();
-		scr.close();
-		socket_in.close();
+			socket_dos.close();
+			reader.close();
+			//stdin.close();
+			server.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 
+			
 	}
-
 }
+
+
+
+
+
