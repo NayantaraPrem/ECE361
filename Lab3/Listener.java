@@ -18,7 +18,9 @@ public class Listener implements Runnable{
 			while((ackn = socket_in.read()) != -1){
 			//set ackn
 			GoBackNClient.setAckNum(ackn);
+			//GoBackNClient.setTimer((ackn-1) % (GoBackNClient.getwSize()));
 			System.out.println("Received ack#"+ ackn); 
+			GoBackNClient.setEnd(System.currentTimeMillis());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
