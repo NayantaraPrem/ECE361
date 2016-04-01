@@ -1,0 +1,11 @@
+
+FileTransfer
+The file is split into 1000 byte sections and and each section is added to an
+array of bytes (representing a packet) which is prepended by its sequence
+number, a 4 byte number.
+While a listener thread (in Listener) listens for acks from the server, the
+main thread in MainClient sends packets according to TCP Tahoe protocol. The
+tiourinterval is determined from the delay to destination calculated by the
+RoutingClient. LastAck is updated by the Listener and MainClient sends packets
+while there are packets to send and while the number of packets sent is less
+than cwnd size.
