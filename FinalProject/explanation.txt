@@ -1,4 +1,9 @@
-
+Shortest path
+The MainClient starts a thread to calculate the shortest path from node 0 to noNodes - 1. 
+First the thread reads the number of nodes from the server. Then the thread reads a string
+that contains all edge weights betweens nodes and store it in a matrix. After getting all
+the edge weights, it uses Dijkstra's algorithm to computer the shortest paths between nodes
+and sends the shortest path between node 0 to noNodes - 1 to the server.
 FileTransfer
 The file is split into 1000 byte sections and and each section is added to an
 array of bytes (representing a packet) which is prepended by its sequence
