@@ -37,7 +37,7 @@ public class MainClient {
 	static long timer = 0, end;
 	static int ackn,lastAck=0;
 	static boolean resend = false;
-	static float cwnd = 1;
+	static int cwnd = 1;
 	static int ssthresh = 16;
 	static int noPackets = 0;
 
